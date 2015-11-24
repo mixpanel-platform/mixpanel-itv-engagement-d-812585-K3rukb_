@@ -231,7 +231,7 @@
               });
             })
             
-            var premiumActives = MP.api.segment('App Open', {type: 'unique', where:'properties["User Type"] == Premium',from: moment().subtract(1, 'months'), unit: 'month'})
+            var premiumActives = MP.api.segment('App Open', 'User Type', {type: 'unique', from: moment().subtract(1, 'months'), unit: 'month'});
             premiumActives.done(function(results) {
                 console.log(results.values());
             });
