@@ -209,25 +209,31 @@
               /* Show this now */
 
             })
-            /* Query for Monthly Active Users */
+            /* Query for DAU/MAU */
+            var dailyQuery = MP.api.query('/api/2.0/events/', {event:events, unit: 'day', union: 1, interval:1, type:'unique'}, {dataType: 'json'});
+            
             var monthlyQuery = MP.api.query('/api/2.0/events/', {event:events, unit: 'month', union: 1, type:'unique'}, {dataType: 'json'}) 
             monthlyQuery.done(function(json){
+                dailyQuery.done(function(jsonData){
                 console.log(json)
                 var data = _.values(json.data.values)
                 var monthlyActives = _.values(data[0])[0]
-
-                $('.monthly-actives').text(addCommas(monthlyActives));
-            });
-
-            var dailyQuery = MP.api.query('/api/2.0/events/', {event:events, unit: 'day', union: 1, interval:1, type:'unique'}, {dataType: 'json'});
-            dailyQuery.done(function(json){
-
-                var data = _.values(json.data.values)[0];
-                var dataKeys = _.keys(data).sort().reverse()
-                var dailyActives = data[dataKeys[0]];
+                
+                var dailyData = _.values(json.data.values)[0];
+                var dataKeys = _.keys(dailyData).sort().reverse()
+                var dailyActives = dailyData[dataKeys[0]];
+                var dauMau = dailyActives/monthlyActives;
                 console.log(dailyActives);
-                $('.daily-actives').text(addCommas(dailyActives));
+                console.log(monthlyActives);
+                $('.monthly-actives').text(dauMau);
+              });
             })
+
+            
+           
+
+                
+          
             /* Date Refresh */
             var date = new Date();
             var day = date.getDate()
