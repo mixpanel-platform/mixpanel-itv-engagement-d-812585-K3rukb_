@@ -234,6 +234,17 @@
             var premiumActives = MP.api.segment('App Open', 'User Type', {type: 'unique', from: moment().subtract(1, 'months'), unit: 'month'});
             premiumActives.done(function(results) {
                 console.log(results.values());
+                var keys = _.keys(results.values());
+                /* Find the latest month -- the most recent month is the last one */
+                var dates = _.keys(results.values()[keys[0]]).sort();
+                var dateToUse = dates[dates.length - 1];
+                
+                /* Sum over total and then divide premium into total */
+                var premiumUsers = results.values()['Premium'][dateToUse];
+                var freemiumUsers = results.values()['Freemium'][dateToUse];
+                var total = premiumUsers + freemiumUsers;
+                var premiumPercentage = (premiumUsers/(total*6)*100);
+                $('.daily-actives').text(premiumPercentage.toFixed(2) + ' %')
             });
 
             
@@ -257,8 +268,8 @@
             $('.date-time').text(time);
             $('.date-pm').text(ampm);
 
-            var pageViewParams = {limit: 25, type:'unique', unit:'minute', from: moment(), to: moment()}
-            var pageViewQuery = MP.api.segment('Page View', 'Url', pageViewParams)
+            var pageViewParams = {limit: 25, type:'general', unit:'minute', from: moment(), to: moment()}
+            var pageViewQuery = MP.api.segment('Programme Started', 'Programme Title', pageViewParams)
 
             pageViewQuery.done(function(results){
                 var data = {}
