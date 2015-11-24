@@ -215,11 +215,11 @@
             var monthlyQuery = MP.api.query('/api/2.0/events/', {event:events, unit: 'month', union: 1, type:'unique'}, {dataType: 'json'}) 
             monthlyQuery.done(function(json){
                 dailyQuery.done(function(jsonData){
-                console.log(json)
+                
                 var data = _.values(json.data.values)
                 var monthlyActives = _.values(data[0])[0]
                 
-                var dailyData = _.values(json.data.values)[0];
+                var dailyData = _.values(jsonData.data.values)[0];
                 var dataKeys = _.keys(dailyData).sort().reverse()
                 var dailyActives = dailyData[dataKeys[0]];
                 var dauMau = dailyActives/monthlyActives;
