@@ -80,7 +80,7 @@
                         </div>
                         <div class="col-xs-8 pv-lg">
                            <div class="h2 mt0 daily-actives text-center">0</div>
-                           <div class="text-uppercase text-center">Paid Actives</div>
+                           <div class="text-uppercase text-center">Premium MAU's</div>
                         </div>
                      </div>
                   </div>
@@ -230,6 +230,11 @@
                 $('.current-users').text(addCommas(monthlyActives));
               });
             })
+            
+            var premiumActives = MP.api.segment('App Open', {type: 'unique', where:'properties["User Type"] == Premium',from: moment().subtract(1, 'months'), unit: 'month'})
+            premiumActives.done(function(results) {
+                console.log(results.values());
+            });
 
             
            
