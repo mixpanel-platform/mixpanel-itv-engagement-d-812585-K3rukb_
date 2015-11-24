@@ -50,7 +50,7 @@
                         </div>
                         <div class="col-xs-8 pv-lg">
                            <div class="h2 mt0 current-users text-center">0</div>
-                           <div class="text-uppercase text-center"> Current Users</div>
+                           <div class="text-uppercase text-center">MAU's</div>
                         </div>
                      </div>
                   </div>
@@ -80,7 +80,7 @@
                         </div>
                         <div class="col-xs-8 pv-lg">
                            <div class="h2 mt0 daily-actives text-center">0</div>
-                           <div class="text-uppercase text-center">Paying Actives</div>
+                           <div class="text-uppercase text-center">Paid Actives</div>
                         </div>
                      </div>
                   </div>
@@ -205,8 +205,8 @@
               }
 
               var totalCurrentUsers = current + lastMinute;
-              $('.current-users').text(addCommas(totalCurrentUsers));
-              /* Show this now */
+              
+              
 
             })
             /* Query for DAU/MAU */
@@ -227,6 +227,7 @@
                 console.log(dailyActives);
                 console.log(monthlyActives);
                 $('.monthly-actives').text(dauMau.toFixed(2));
+                $('.current-users').text(addCommas(monthlyActives));
               });
             })
 
