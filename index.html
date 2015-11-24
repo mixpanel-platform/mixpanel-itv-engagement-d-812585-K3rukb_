@@ -86,24 +86,18 @@
                   </div>
                </div>
                <div class="col-lg-3 col-md-6 col-sm-3">
-                  <!-- START date widget-->
-                  <div class="panel widget">
+                  <!-- START widget-->
+                  <div class="panel widget bg-green">
                      <div class="row row-table">
-                        <div class="col-xs-4 text-center bg-green pv-lg">
-                           <!-- See formats: https://docs.angularjs.org/api/ng/filter/date-->
-                           <div data-now="" data-format="MMMM" class="text-sm date-month text-center"></div>
-                           <br>
-                           <div data-now="" data-format="D" class="h2 mt0 date-day text-center"></div>
+                        <div class="col-xs-4 text-center bg-green-dark pv-lg">
+                           <em class="icon-energy fa-3x"></em>
                         </div>
                         <div class="col-xs-8 pv-lg">
-                           <div data-now="" data-format="dddd" class="text-uppercase date-actual-day text-center"></div>
-                           <br>
-                           <div data-now="" data-format="h:mm" class="h2 mt0 date-time"></div>
-                           <div data-now="" data-format="a" class="text-muted text-sm date-pm"></div>
+                           <div class="h2 mt0 churned-users text-center">0</div>
+                           <div class="text-uppercase text-center">Churned Users</div>
                         </div>
                      </div>
                   </div>
-                  <!-- END date widget    -->
                </div>
             </div>
 
@@ -247,8 +241,21 @@
                 $('.daily-actives').text(premiumPercentage.toFixed(2) + ' %')
             });
 
-            
-           
+            var churnedParams = {
+                type: 'unique',     
+                unit: 'month'       
+            };
+
+            var churnedQuery = MP.api.events('Churned', churnedParams)
+             churnedQuery.done(function(results){
+                var keys = _.keys(results.values());
+                /* Find the latest month -- the most recent month is the last one */
+                var dates = _.keys(results.values()[keys[0]]).sort();
+                var dateToUse = dates[dates.length - 1];
+                var churned = results.values()['Churned'][dateToUse];
+                
+                $('.churned-users').text(churned);
+             });
 
                 
           
@@ -268,7 +275,7 @@
             $('.date-time').text(time);
             $('.date-pm').text(ampm);
 
-            var pageViewParams = {limit: 25, type:'general', unit:'minute', from: moment(), to: moment()}
+            var pageViewParams = {limit: 25, type:'general', unit:'day', from: moment().subtract(30, 'days'), to: moment()}
             var pageViewQuery = MP.api.segment('Programme Started', 'Programme Title', pageViewParams)
 
             pageViewQuery.done(function(results){
