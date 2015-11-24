@@ -215,7 +215,7 @@
                 var dailyData = _.values(jsonData.data.values)[0];
                 var dataKeys = _.keys(dailyData).sort().reverse()
                 var dailyActives = dailyData[dataKeys[0]];
-                var dauMau = dailyActives/monthlyActives;
+                var dauMau = dailyActives*100/monthlyActives;
                 
                 console.log(dailyActives);
                 console.log(monthlyActives);
